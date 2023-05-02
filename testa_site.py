@@ -65,5 +65,3 @@ def api_check_website():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# TRATAR QUANDO A PÁGINA NÃO EXISTE OU ALGO DÁ ERRADO NO CARREGAMENTO
