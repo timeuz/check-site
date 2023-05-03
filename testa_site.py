@@ -6,20 +6,24 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    latency = None
+    total_time = 0
+    latency = 0
+    status = 0
     return render_template('home.html')
 
 @app.route('/', methods=['POST'])
 def check_website():
-    latency = None
+    total_time = 0
+    latency = 0
+    status = 0
     url = request.form['url']
     if not url.startswith('http'):
         url = 'http://' + url
     try:
         start_time = time.time()
         response = requests.get(url, timeout=5)
+        status = response.status_code
         latency = round((time.time() - start_time), 2)
-        print(latency)
         total_time = round(response.elapsed.total_seconds(), 2)
         if response.status_code == 200:
             message = f"{url} is reachable with {latency} s latency. Total loading time: {total_time} s"
@@ -31,11 +35,13 @@ def check_website():
         message = f"{url} could not be reached"
     except Exception as e:
         message = str(e)
-    return render_template('home.html', message=message, latency=latency, total_time=total_time, status=response.status_code)
+    return render_template('home.html', message=message, latency=latency, total_time=total_time, status=status)
 
 @app.route('/api/check_website', methods=['GET', 'POST'])
 def api_check_website():
+    total_time = None
     latency = None
+    status = None
     url = request.json['url']
     if not url.startswith('http'):
         url = 'http://' + url
