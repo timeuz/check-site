@@ -31,7 +31,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Check Website <span style="color: #28a745;"><strong> {{ url }} </strong></span></h1>
+		<h1 class="text-center">Check Website <span style="color: #28a745;"><strong> {{ url }} </strong></span></h1>
 		{% if message %}
 			<div class="result">
 				<p class="{% if message %} {% if status == 0 %}danger{% elif status == 200 %}success{% else %}danger{% endif %}{% endif %}">Website status: {% if message %} {% if status == 0 %}Indisponivel{% elif status == 200 %}Disponivel ({{ status }}){% else %}Indisponivel ({{ status }}){% endif %}{% endif %}</p>
@@ -41,10 +41,10 @@
 		{% endif %}
 		<form method="POST">
 			<div class="form-group">
-				<label for="url">Enter website URL:</label>
+				<label for="url">Digite o endere&ccedil;o do website:</label>
 				<input type="text" class="form-control" name="url" id="url">
 			</div>
-			<button type="submit" class="btn btn-primary">Check</button>
+			<button type="submit" class="btn btn-primary">Checar...</button>
 		</form>
 	</div>
 	<!-- Include Bootstrap JS -->
