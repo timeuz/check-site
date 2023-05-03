@@ -35,7 +35,7 @@ def check_website():
         message = f"{url} could not be reached"
     except Exception as e:
         message = str(e)
-    return render_template('home.html', message=message, latency=latency, total_time=total_time, status=status)
+    return render_template('home.html', message=message, latency=latency, total_time=total_time, status=status, url=url)
 
 @app.route('/api/check_website', methods=['GET', 'POST'])
 def api_check_website():
@@ -70,4 +70,4 @@ def api_check_website():
     return jsonify({'status': status, 'message': message, 'latency': latency, 'total_time': total_time})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
