@@ -31,7 +31,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Check Website - {{ url }}</h1>
+		<h1>Check Website <span style="color: #28a745;"><strong> {{ url }} </strong></span></h1>
 		{% if message %}
 			<div class="result">
 				<p class="{% if message %} {% if status == 0 %}danger{% elif status == 200 %}success{% else %}danger{% endif %}{% endif %}">Website status: {% if message %} {% if status == 0 %}Indisponivel{% elif status == 200 %}Disponivel ({{ status }}){% else %}Indisponivel ({{ status }}){% endif %}{% endif %}</p>
