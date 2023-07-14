@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from hurry.filesize import size
 import requests
 import time
 
@@ -9,6 +10,7 @@ def home():
     total_time = 0
     latency = 0
     status = 0
+    page_size = 0
     return render_template('home.html')
 
 @app.route('/', methods=['POST'])
@@ -16,6 +18,7 @@ def check_website():
     total_time = 0
     latency = 0
     status = 0
+    page_size = 0
     url = request.form['url']
     if not url.startswith('http'):
         url = 'http://' + url
@@ -25,6 +28,8 @@ def check_website():
         status = response.status_code
         latency = round((time.time() - start_time), 2)
         total_time = round(response.elapsed.total_seconds(), 2)
+        page_size=len(response.content)
+        page_size=size(page_size)
         if response.status_code == 200:
             message = f"{url} is reachable with {latency} s latency. Total loading time: {total_time} s"
         else:
@@ -35,7 +40,7 @@ def check_website():
         message = f"{url} could not be reached"
     except Exception as e:
         message = str(e)
-    return render_template('home.html', message=message, latency=latency, total_time=total_time, status=status, url=url)
+    return render_template('home.html', message=message, latency=latency, total_time=total_time, status=status, url=url, page_size=page_size)
 
 
 
@@ -54,6 +59,8 @@ def api_check_website(url):
         response = requests.get(url, timeout=5)
         latency = round((time.time() - start_time), 2)
         total_time = round(response.elapsed.total_seconds(), 2)
+        page_size=len(response.content)
+        page_size=size(page_size)
         if response.status_code == 200:
             message = f"{url} esta vivo"
             status = f"sucesso {str(response.status_code)}"
@@ -70,7 +77,7 @@ def api_check_website(url):
         message = str(e)
         status = f"erro 500"
 
-    return jsonify({'status': status, 'message': message, 'latency': latency, 'total_time': total_time})
+    return jsonify({'status': status, 'message': message, 'latency': latency, 'total_time': total_time, 'page_size': page_size})
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
